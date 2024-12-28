@@ -3,10 +3,11 @@ import axios from 'axios';
 
 function ProductList() {
   const [products, setProducts] = useState([]);
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     axios
-      .get('http://localhost:5000/api/products')
+      .get(`${apiUrl}/products`)
       .then((response) => setProducts(response.data))
       .catch((error) => console.error('Error al obtener productos:', error));
   }, []);
@@ -29,3 +30,4 @@ function ProductList() {
 }
 
 export default ProductList;
+
