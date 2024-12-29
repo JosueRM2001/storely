@@ -1,22 +1,26 @@
-const User = require('../models/userModel');
+const User = require('../models/userModel'); // Asegúrate de que la ruta sea correcta
 
 // Obtener todos los usuarios
-exports.getAllUsers = async (req, res) => {
+const getAllUsers = async (req, res) => {
   try {
-    const users = await User.findAll();
-    res.status(200).json(users);
+    const users = await User.findAll(); // Busca todos los usuarios en la base de datos
+    res.status(200).json(users); // Devuelve los usuarios como JSON
   } catch (error) {
-    res.status(500).json({ error: 'Error al obtener los usuarios' });
+    console.error('Error al obtener usuarios:', error);
+    res.status(500).json({ message: 'Error al obtener usuarios', error });
   }
 };
 
 // Crear un nuevo usuario
-exports.createUser = async (req, res) => {
+const createUser = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
-    const newUser = await User.create({ username, email, password });
-    res.status(201).json(newUser);
+    const { nombre, email, password, rol } = req.body; // Datos desde el cuerpo de la solicitud
+    const newUser = await User.create({ nombre, email, password, rol });
+    res.status(201).json(newUser); // Devuelve el usuario creado
   } catch (error) {
-    res.status(500).json({ error: 'Error al crear el usuario' });
+    console.error('Error al crear usuario:', error);
+    res.status(500).json({ message: 'Error al crear usuario', error });
   }
 };
+
+module.exports = { getAllUsers, createUser };
