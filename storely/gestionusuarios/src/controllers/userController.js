@@ -1,22 +1,34 @@
-const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 
-exports.getAllUsers = async (req, res) => {
+// Crear un usuario
+const createUser = async (req, res) => {
   try {
-    const users = await User.findAll();
-    res.json(users);
+    const { nombre, email, password, rol } = req.body;
+
+    // Crear el usuario en la base de datos
+    const newUser = await User.create({ nombre, email, password, rol });
+    res.status(201).json({ message: 'Usuario creado con éxito', user: newUser });
   } catch (error) {
-    res.status(500).json({ error: 'Error al obtener usuarios' });
+    console.error('Error al crear usuario:', error);
+    res.status(500).json({ message: 'Error al crear usuario', error: error.message });
   }
 };
 
-exports.createUser = async (req, res) => {
+// Obtener todos los usuarios
+const getUsers = async (req, res) => {
   try {
-    const { nombre, email, password, rol } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await User.create({ nombre, email, password: hashedPassword, rol });
-    res.status(201).json(user);
+    // Obtener todos los usuarios
+    const users = await User.findAll();
+    res.status(200).json(users);
   } catch (error) {
-    res.status(500).json({ error: 'Error al crear usuario' });
+    console.error('Error al obtener usuarios:', error);
+    res.status(500).json({ message: 'Error al obtener usuarios', error: error.message });
   }
 };
+
+module.exports = {
+  createUser,
+  getUsers,
+};
+
+
