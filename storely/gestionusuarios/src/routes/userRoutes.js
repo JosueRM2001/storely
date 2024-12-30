@@ -1,10 +1,13 @@
 const express = require('express');
-const { createUser } = require('../controllers/userController');
+const { createUser, getUsers } = require('../controllers/userController');
 
 const router = express.Router();
 
-// Endpoint para crear un usuario
+// Ruta para crear un usuario
 router.post('/users', createUser);
+
+// Ruta para obtener todos los usuarios
+router.get('/users', getUsers);
 
 module.exports = router;
 
