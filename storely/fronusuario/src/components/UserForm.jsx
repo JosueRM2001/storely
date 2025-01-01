@@ -1,14 +1,12 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 function UserForm({ fetchUsers }) {
   const [formData, setFormData] = useState({
-    nombre: "",
-    email: "",
-    password: "",
-    rol: "user",
+    nombre: '',
+    email: '',
+    password: '',
+    rol: 'user',
   });
-
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; // URL desde el .env
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,23 +16,24 @@ function UserForm({ fetchUsers }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${API_BASE_URL}/users`, {
-        method: "POST",
+      const response = await fetch(import.meta.env.VITE_API_URL + '/users', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
       });
 
       if (response.ok) {
-        alert("Usuario creado con éxito");
-        setFormData({ nombre: "", email: "", password: "", rol: "user" });
-        fetchUsers(); // Actualizar lista
+        alert('Usuario creado con éxito');
+        setFormData({ nombre: '', email: '', password: '', rol: 'user' });
+        fetchUsers();
       } else {
-        alert("Error al crear usuario");
+        const errorData = await response.json();
+        alert(`Error: ${errorData.message}`);
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error('Error al crear usuario:', error);
     }
   };
 
@@ -44,33 +43,15 @@ function UserForm({ fetchUsers }) {
       <form onSubmit={handleSubmit}>
         <label>
           Nombre:
-          <input
-            type="text"
-            name="nombre"
-            value={formData.nombre}
-            onChange={handleChange}
-            required
-          />
+          <input type="text" name="nombre" value={formData.nombre} onChange={handleChange} required />
         </label>
         <label>
           Email:
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
+          <input type="email" name="email" value={formData.email} onChange={handleChange} required />
         </label>
         <label>
           Contraseña:
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
+          <input type="password" name="password" value={formData.password} onChange={handleChange} required />
         </label>
         <label>
           Rol:

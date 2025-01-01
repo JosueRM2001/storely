@@ -1,28 +1,22 @@
-import React, { useState, useEffect } from "react";
-import UserForm from "./components/UserForm";
-import UserList from "./components/UserList";
-import "./App.css";
+import React, { useState, useEffect } from 'react';
+import UserForm from './components/UserForm';
+import UserList from './components/UserList';
+import './App.css';
 
 function App() {
-  const [users, setUsers] = useState([]); // Estado para almacenar usuarios
+  const [users, setUsers] = useState([]);
 
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; // URL desde el .env
-
-  // Función para obtener usuarios de la API
+  // Función para obtener usuarios
   const fetchUsers = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/users`);
-      if (!response.ok) {
-        throw new Error("Error al obtener usuarios");
-      }
+      const response = await fetch(import.meta.env.VITE_API_URL + '/users');
       const data = await response.json();
       setUsers(data);
     } catch (error) {
-      console.error("Error:", error);
+      console.error('Error al obtener usuarios:', error);
     }
   };
 
-  // Ejecutar fetchUsers al cargar el componente
   useEffect(() => {
     fetchUsers();
   }, []);
