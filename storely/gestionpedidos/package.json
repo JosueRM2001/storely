@@ -1,0 +1,22 @@
+{
+    "name": "gestion-pedidos",
+    "version": "1.0.0",
+    "description": "Microservicio para la gestión de pedidos con MySQL y Express.",
+    "main": "src/app.js",
+    "scripts": {
+        "start": "node src/app.js",
+        "dev": "nodemon src/app.js"
+    },
+    "keywords": [],
+    "author": "TuNombre",
+    "license": "MIT",
+    "dependencies": {
+        "dotenv": "^10.0.0",
+        "express": "^4.21.2",
+        "mysql2": "^3.12.0",
+        "sequelize": "^6.37.5"
+    },
+    "devDependencies": {
+        "nodemon": "^3.0.1"
+    }
+}
