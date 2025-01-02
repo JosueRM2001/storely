@@ -1,26 +1,30 @@
+require('dotenv').config();
 const express = require('express');
-const sequelize = require('./config/database');
-const userRoutes = require('./routes/userRoutes');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const sequelize = require('./config/database'); // Importa tu archivo de configuración
 
-// Inicializar la aplicación
 const app = express();
-app.use(express.json());
-
+app.use(cors());
+app.use(bodyParser.json());
 // Conectar a la base de datos
-sequelize.authenticate()
-  .then(() => console.log('Base de datos conectada correctamente.'))
-  .catch(error => console.error('Error al conectar a la base de datos:', error));
+(async () => {
+  try {
+    await sequelize.authenticate();
+    console.log('Base de datos conectada correctamente.');
+    await sequelize.sync({ alter: true }); // Sincronizar modelos con la base de datos
+    console.log('Modelos sincronizados.');
+  } catch (error) {
+    console.error('Error al conectar/sincronizar la base de datos:', error.message);
+  }
+})();
 
-// Sincronizar los modelos con la base de datos
-sequelize.sync({ alter: true })
-  .then(() => console.log('Modelos sincronizados.'))
-  .catch(error => console.error('Error al sincronizar modelos:', error));
-
-// Usar las rutas
+// Rutas del servidor
+const userRoutes = require('./routes/userRoutes'); // Cambia el nombre si tienes otro archivo
 app.use('/api', userRoutes);
 
 // Iniciar el servidor
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
